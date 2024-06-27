@@ -18,7 +18,16 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: #252525;
+  background: #fff;
+  color: #252525;
+  height: 100vh;
+  overflow: hidden;
+}
+main {
+  height: 90%;
+}
+.page-main {
+  height: 100% !important;
 }
 
 @layer utilities {
@@ -27,10 +36,18 @@ body {
   }
 }
 
-.container{
+.container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 30px;
   box-sizing: border-box;
   background-color: inherit;
+  height: 100%;
+}
+.page-main {
+  height: 88%;
+}
+.nav__item-link {
+  display: flex;
+  gap: 5px;
 }

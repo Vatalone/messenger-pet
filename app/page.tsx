@@ -1,9 +1,12 @@
-import Image from "next/image";
-import Header from './Components/Header'
+import Header from './Components/Header';
+import Main from './Components/Main';
+import { Provider } from 'react-redux';
+import store from './store';
 export default function Home() {
   return (
-    <>
-    <Header></Header>
-    </>
+    <Provider store={store}>
+      <Header />
+      <Main />
+    </Provider>
   );
 }
