@@ -27,7 +27,7 @@ main {
   height: 90%;
 }
 .page-main {
-  height: 100% !important;
+  height: 98%;
 }
 
 @layer utilities {
@@ -44,10 +44,13 @@ main {
   background-color: inherit;
   height: 100%;
 }
-.page-main {
-  height: 88%;
-}
 .nav__item-link {
   display: flex;
   gap: 5px;
+}
+.feed__addPost {
+  min-height: 96px;
+}
+.feedpost__more-block {
+  right: -80px;
 }
