@@ -1,13 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAppDispatch } from '../hooks';
+import { changeCurrent } from '../store/usersSlice';
 import Button from './microComponents/Button';
 import logo from './../../public/logo.svg';
 import avatar from './../../public/avatar.jpg';
 import downArrow from './../../public/arrow-down.svg';
 import search from './../../public/search-01-stroke-rounded.svg';
-//imports
 
 export default function Header() {
+  const dispatch = useAppDispatch();
   return (
     <header className="border-b-2 border-violet-900 py-2 bg-violet-50">
       <div className="container">
@@ -16,12 +18,7 @@ export default function Header() {
             className="header__siteLogo outline-none flex items-center gap-4"
             href="/"
           >
-            <Image
-              src={logo}
-              alt="logo"
-              width={60}
-              height={60}
-            />
+            <Image src={logo} alt="logo" width={60} height={60} />
             <p className="text-2xl">Logo</p>
           </Link>
           <div className="posts__input  relative">
@@ -44,7 +41,10 @@ export default function Header() {
                 className="rounded-full"
               />
             </Link>
-            <Button className="header__profiles-settings">
+            <Button
+              onClick={() => dispatch(changeCurrent({}))}
+              className="header__profiles-settings"
+            >
               <Image src={downArrow} alt="" />
             </Button>
           </div>
