@@ -1,22 +1,38 @@
-import { useRef, useState } from 'react';
-import { useAppDispatch } from '../hooks';
+import { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { addPost } from '../store/postsSlice';
 import Image from 'next/image';
 import FeedPosts from './microComponents/FeedPosts';
 import Button from './microComponents/Button';
 
 //images
-import addImg from './../../public/add.svg';
-import sendImg from './../../public/sent.svg';
+import addImg from '@/public/add.svg';
+import sendImg from '@/public/sent.svg';
 
 export default function Feed() {
   const dispatch = useAppDispatch();
+  const userName = useAppSelector(state => state.users.currentUser.name);
+  const choicenImg = useAppSelector(state => state.posts.choicenImg);
 
   const [text, setText] = useState<string>('');
   const [image, setImage] = useState<File | false>(false);
+  const [imageSrc, setImageSrc] = useState<string>('');
   function handleInput(e: React.ChangeEvent<HTMLInputElement>): void {
     setText(e.target.value);
   }
+
+  // useEffect(() => {
+  //   if (choicenImg instanceof ArrayBuffer) {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(new Blob([choicenImg]));
+  //     reader.onload = () => {
+  //       const base64String = reader.result as string;
+  //       setImageSrc(base64String);
+  //     };
+  //   } else {
+  //     setImageSrc(choicenImg as string);
+  //   }
+  // }, [choicenImg]);
 
   const inp = useRef<HTMLInputElement>(null);
   const inpFile = useRef<HTMLInputElement>(null);
@@ -32,7 +48,8 @@ export default function Feed() {
       dispatch(
         addPost({
           text,
-          img: false,
+          img: null,
+          userName,
         }),
       );
       if (inp.current) {
@@ -48,6 +65,7 @@ export default function Feed() {
           addPost({
             text,
             img: value,
+            userName,
           }),
         );
         if (inp.current && inpFile.current) {
@@ -68,11 +86,12 @@ export default function Feed() {
             type="text"
             className="feed__addPost-inp p-2 outline-0 border-b-2 border-violet-900 bg-transparent w-4/5"
             placeholder="Describe your story into new post"
+            accept=".jpg, .png, .jpeg"
             value={text}
             onChange={handleInput}
             ref={inp}
           />
-          <div className="feed__addPost-btns flex gap-4">
+          <div className="feed__addPost-btns flex gap-4 relative">
             <label htmlFor="feed__addPost-file" className="cursor-pointer">
               <input
                 type="file"
@@ -83,6 +102,14 @@ export default function Feed() {
               />
               <Image className="w-6" src={addImg} alt="" />
             </label>
+
+            <Image
+              src={imageSrc}
+              alt=""
+              className="absolute -top-16 right-20 rounded-t-xl"
+              width={80}
+              height={40}
+            />
 
             <Button onClick={addPostFunc}>
               <Image className="w-6" src={sendImg} alt="" />

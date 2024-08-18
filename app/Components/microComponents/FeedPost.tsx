@@ -10,18 +10,30 @@ import favImgCol from './../../../public/favouriteColored.svg';
 import comImg from './../../../public/comment.svg';
 import repostImg from './../../../public/repost.svg';
 import moreImg from './../../../public/more.svg';
+import Link from 'next/link';
 
 interface IFeedPost {
   text: string;
-  img: string | false | null | ArrayBuffer;
+  img: string | null | ArrayBuffer;
   id: number;
   likesCount: number;
+  name: string;
+  time: number;
 }
 
-export default function FeedPost({ text, img, id, likesCount }: IFeedPost) {
+export default function FeedPost({
+  text,
+  img,
+  id,
+  likesCount,
+  name,
+  time,
+}: IFeedPost) {
   const [alreadyLiked, setAlreadyLiked] = useState<boolean>(false);
   const [hiddenBtn, setHiddenBtn] = useState<boolean>(true);
   const [imageSrc, setImageSrc] = useState<string>('');
+
+  const [ago, setAgo] = useState<string>('');
 
   useEffect(() => {
     if (img instanceof ArrayBuffer) {
@@ -33,6 +45,18 @@ export default function FeedPost({ text, img, id, likesCount }: IFeedPost) {
       };
     } else {
       setImageSrc(img as string);
+    }
+
+    const countDown: number = new Date().getTime();
+    let temp: number = Math.floor((countDown - time) / 1000);
+    if (temp === 0) {
+      setAgo('just now');
+    } else if (temp < 60 && temp > 0) {
+      setAgo(temp + 's ago');
+    } else if (temp >= 60 && temp < 60 * 60) {
+      setAgo(Math.floor(temp / 60) + 'm ago');
+    } else if (temp >= 60 * 60 && temp < 60 * 60 * 24) {
+      setAgo(Math.floor(temp / (60 * 60)) + 'h ago');
     }
   });
 
@@ -103,6 +127,15 @@ export default function FeedPost({ text, img, id, likesCount }: IFeedPost) {
         >
           <Button onClick={deletePost}>Delete</Button>
         </div>
+      </div>
+      <div className="feedpost__name absolute left-2 -bottom-8 text-violet-50 flex gap-4">
+        <Link
+          href="/"
+          className="transition-all hover:border-b hover:border-violet-50"
+        >
+          {name}
+        </Link>
+        <div className="feedpost__item">{ago}</div>
       </div>
     </div>
   );

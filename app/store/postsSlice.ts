@@ -1,22 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-type Post = {
+export type Post = {
   text: string;
-  img: string | false | null | ArrayBuffer;
+  img: string | null | ArrayBuffer;
   likesCount: number | 0;
   id: number;
+  userName: string;
+  time: number;
 };
 type PostsState = {
   postsArr: Post[];
+  choicenImg: string | null | ArrayBuffer;
 };
 
 const initialState: PostsState = {
   postsArr: [],
+  choicenImg: null,
 };
 type PostAdd = {
   text: string;
-  img: string | false | null | ArrayBuffer;
+  img: string | null | ArrayBuffer;
+  userName: string;
 };
 
 type PostLike = {
@@ -34,6 +39,8 @@ const postsSlice = createSlice({
         img: action.payload.img,
         likesCount: 0,
         id: new Date().getTime(),
+        userName: action.payload.userName,
+        time: new Date().getTime(),
       });
     },
     removePost(state, action: PayloadAction<number>) {
@@ -52,6 +59,9 @@ const postsSlice = createSlice({
           if (el.id === action.payload.id) el.likesCount -= 1;
         });
       }
+    },
+    setPreloadImg(state, action: PayloadAction<string | null | ArrayBuffer>) {
+      state.choicenImg = action.payload;
     },
   },
 });

@@ -4,7 +4,7 @@ import Button from './microComponents/Button';
 import addFriendImg from './../../public/useraddImg.svg';
 import settingsImg from './../../public/more.svg';
 import { useAppDispatch } from '../hooks';
-import { addToFriens, deleteFromFriends } from '../store/usersSlice';
+import { addToFriens, deleteFromFriends, addToChat } from '../store/usersSlice';
 import { useState } from 'react';
 
 interface IFrensItem {
@@ -29,6 +29,14 @@ export default function FrensItem({
   function handleAdd() {
     dispatch(
       addToFriens({
+        name,
+        descr,
+        logo,
+        id,
+      }),
+    );
+    dispatch(
+      addToChat({
         name,
         descr,
         logo,
